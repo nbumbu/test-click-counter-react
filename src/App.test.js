@@ -63,3 +63,23 @@ test('increments counter on button click on display', () => {
   const counterDisplay = findByTestAttr(wrapper, 'counter-display');
   expect(counterDisplay.text()).toContain(counter + 1);
 });
+
+test('decrements counter by 1 on button click on the display', () => {
+  const currentCounter = 70;
+  const wrapper = setup(null, {counter: currentCounter});
+  const button = findByTestAttr(wrapper, 'decrement-button');
+  button.simulate('click');
+  const counterDisplay = findByTestAttr(wrapper, 'counter-display');
+  expect(counterDisplay.text()).toContain(currentCounter - 1);
+});
+
+test('the displayed value should not go below 0, otherwise it displays an error message', () => {
+  const currentCounter = 0;
+  const wrapper = setup(null, {counter: currentCounter});
+  const button = findByTestAttr(wrapper, 'decrement-button');
+  button.simulate('click');
+  const counterDisplay = findByTestAttr(wrapper, 'counter-display');
+  expect(counterDisplay.text()).toContain(0);
+  const warningMsg = findByTestAttr(wrapper, 'warning-msg');
+  expect(warningMsg.text()).toBeTruthy();
+})
